@@ -87,7 +87,7 @@ class HomeController extends CommonController
         },
         {
           "title": "菜单管理",
-          "href": "layuimini/page/menu.html",
+          "href": "' . route('admin_menu') .'",
           "icon": "fa fa-window-maximize",
           "target": "_self"
         },
@@ -301,6 +301,11 @@ class HomeController extends CommonController
     }
 
     public function menu()
+    {
+        return view('admin.home.menu');
+    }
+
+    public function menu_api()
     {
         return $this->ret([
             'code' => 0,

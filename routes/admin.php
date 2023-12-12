@@ -10,6 +10,7 @@ Route::group(["prefix" => "admin", "namespace" => "Admin", 'middleware' => ['web
 
     Route::get('clear', 'HomeController@clear')->name('admin_clear');
     Route::get('menu', 'HomeController@menu')->name('admin_menu');
+    Route::get('menu_api', 'HomeController@menu_api')->name('admin_menu_api');
     Route::get('table', 'HomeController@table')->name('admin_table');
     Route::get('tableSelect', 'HomeController@tableSelect')->name('admin_tableSelect');
     Route::get('upload', 'HomeController@upload')->name('admin_upload');
