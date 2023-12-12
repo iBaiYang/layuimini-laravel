@@ -27,6 +27,10 @@ nginx伪静态配置：
     }
 ```
 
+## 使用
+
+视图文件开发，给 public/layuimini 文件夹搭建 html 服务，在浏览器中查看效果、追溯源码进行开发。
+
 ## 参考
 
 LAYUI MINI 官网：http://layuimini.99php.cn/
