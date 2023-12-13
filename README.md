@@ -37,5 +37,7 @@ LAYUI MINI 官网：http://layuimini.99php.cn/
 
 Laravel 官网：https://laravel.com/
 
+Layui 官网： https://layui.dev/
+
 Laravel 6 中文文档：https://laravelacademy.org/books/laravel-docs-6
 

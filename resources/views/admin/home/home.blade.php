@@ -12,7 +12,7 @@
     <meta name="apple-mobile-web-app-status-bar-style" content="black">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="format-detection" content="telephone=no">
-{{--    <link rel="icon" href="images/favicon.ico">--}}
+    <link rel="icon" href="static/images/favicon.ico">
     <link rel="stylesheet" href="/layuimini/lib/layui-v2.5.5/css/layui.css" media="all">
     <link rel="stylesheet" href="/layuimini/lib/font-awesome-4.7.0/css/font-awesome.min.css" media="all">
     <link rel="stylesheet" href="/layuimini/css/layuimini.css?v=2.0.1" media="all">
@@ -103,7 +103,7 @@
 
         <div class="layui-card layuimini-page-header layui-hide">
             <div class="layui-breadcrumb layuimini-page-title">
-                <a lay-href="" href="/">主页</a><span lay-separator="">/</span>
+                <a lay-href="" href="{{route('index')}}">主页</a><span lay-separator="">/</span>
                 <a><cite>常规管理</cite></a><span lay-separator="">/</span>
                 <a><cite>系统设置</cite></a>
             </div>

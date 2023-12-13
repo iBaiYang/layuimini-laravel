@@ -48,8 +48,8 @@ class HomeController extends CommonController
     "href": "layuimini/page/welcome-1.html?t=1"
   },
   "logoInfo": {
-    "title": "LAYUI MINI",
-    "image": "layuimini/images/logo.png",
+    "title": "Lay Lara",
+    "image": "static/images/logo.png",
     "href": ""
   },
   "menuInfo": [
