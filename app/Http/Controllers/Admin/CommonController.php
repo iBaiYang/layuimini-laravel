@@ -18,7 +18,7 @@ class CommonController extends Controller
     {
         return json_encode(array_merge([
             'code' => 0,
-            'msg' => 0,
+            'msg' => '',
             'data' => []
         ], $data));
     }

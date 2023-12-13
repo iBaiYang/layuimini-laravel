@@ -43,7 +43,7 @@ class Admin extends Model
      *
      * @var bool
      */
-    public $timestamps = true;
+    public $timestamps = false;
 
     const CREATED_AT = 'created_at';
     const UPDATED_AT = 'updated_at';

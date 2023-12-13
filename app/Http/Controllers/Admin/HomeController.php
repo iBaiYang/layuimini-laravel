@@ -183,26 +183,6 @@ class HomeController extends CommonController
               "target": "_self"
             }
           ]
-        },
-        {
-          "title": "系统管理",
-          "href": "",
-          "icon": "fa fa-snowflake-o",
-          "target": "",
-          "child": [
-            {
-              "title": "权限管理",
-              "href": "' . route('admin_rbac_action', [], false) .'",
-              "icon": "fa fa-snowflake-o",
-              "target": "_self"
-            },
-            {
-              "title": "角色管理",
-              "href": "' . route('admin_rbac_role', [], false) .'",
-              "icon": "fa fa-shield",
-              "target": "_self"
-            }
-          ]
         }
       ]
     },
@@ -303,6 +283,34 @@ class HomeController extends CommonController
           "href": "layuimini/page/error.html",
           "icon": "fa fa-superpowers",
           "target": "_self"
+        }
+      ]
+    },
+    {
+      "title": "系统管理",
+      "href": "",
+      "icon": "fa fa-gears",
+      "target": "",
+      "child": [
+        {
+          "title": "权限管理",
+          "href": "",
+          "icon": "fa fa-shield",
+          "target": "_self",
+          "child": [
+            {
+              "title": "操作管理",
+              "href": "' . route('admin_rbac_action', [], false) .'",
+              "icon": "fa fa-stumbleupon-circle",
+              "target": "_self"
+            },
+            {
+              "title": "角色管理",
+              "href": "' . route('admin_rbac_role', [], false) .'",
+              "icon": "fa fa-viacoin",
+              "target": "_self"
+            }
+          ]
         }
       ]
     }
