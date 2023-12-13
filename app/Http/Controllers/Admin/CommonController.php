@@ -2,10 +2,7 @@
 
 namespace App\Http\Controllers\Admin;
 
-use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
-use Illuminate\Foundation\Bus\DispatchesJobs;
-use Illuminate\Foundation\Validation\ValidatesRequests;
-use Illuminate\Routing\Controller;
+use App\Http\Controllers\Controller;
 
 /**
  * Class CommonController
@@ -13,8 +10,6 @@ use Illuminate\Routing\Controller;
  */
 class CommonController extends Controller
 {
-    use AuthorizesRequests, DispatchesJobs, ValidatesRequests;
-
     /**
      * @param array $data
      * @return false|string

@@ -19,7 +19,7 @@ class CheckLogin
      */
     public function handle($request, Closure $next)
     {
-        if (!$request->session()->get('user_token')) {
+        if (!$request->session()->get('admin_id')) {
             return redirect(route('admin_login'));
         }
 

@@ -17,7 +17,8 @@ class HomeController extends CommonController
     public function login_out(Request $request)
     {
         try {
-            $request->session()->forget('user_token');
+            $request->session()->forget('admin_id');
+            $request->session()->forget('admin_info');
 
             return $this->ret([
                 'code' => 1,
@@ -87,7 +88,7 @@ class HomeController extends CommonController
         },
         {
           "title": "菜单管理",
-          "href": "' . route('admin_menu') .'",
+          "href": "' . route('admin_menu', [], false) .'",
           "icon": "fa fa-window-maximize",
           "target": "_self"
         },
@@ -178,6 +179,26 @@ class HomeController extends CommonController
             {
               "title": "弹出层",
               "href": "layuimini/page/layer.html",
+              "icon": "fa fa-shield",
+              "target": "_self"
+            }
+          ]
+        },
+        {
+          "title": "系统管理",
+          "href": "",
+          "icon": "fa fa-snowflake-o",
+          "target": "",
+          "child": [
+            {
+              "title": "权限管理",
+              "href": "' . route('admin_rbac_action', [], false) .'",
+              "icon": "fa fa-snowflake-o",
+              "target": "_self"
+            },
+            {
+              "title": "角色管理",
+              "href": "' . route('admin_rbac_role', [], false) .'",
               "icon": "fa fa-shield",
               "target": "_self"
             }
@@ -292,6 +313,9 @@ class HomeController extends CommonController
         return $data;
     }
 
+    /**
+     * @return false|string
+     */
     public function clear()
     {
         return $this->ret([
@@ -299,6 +323,12 @@ class HomeController extends CommonController
             'msg' => '服务端清理缓存成功',
         ]);
     }
+
+
+
+
+
+
 
     public function menu()
     {

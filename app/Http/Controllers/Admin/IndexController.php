@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Model\Admin;
 use Illuminate\Http\Request;
 
 /**
@@ -16,7 +17,7 @@ class IndexController extends CommonController
      */
     public function index(Request $request)
     {
-        if (!$request->session()->get('user_token')) {
+        if (!$request->session()->get('admin_id')) {
             return redirect(route('admin_login'));
         }
 
@@ -29,7 +30,7 @@ class IndexController extends CommonController
      */
     public function login(Request $request)
     {
-        if ($request->session()->get('user_token')) {
+        if ($request->session()->get('admin_id')) {
             return redirect(route('admin_home'));
         }
 
@@ -42,7 +43,7 @@ class IndexController extends CommonController
      */
     public function login_in(Request $request)
     {
-        if ($request->session()->get('user_token')) {
+        if ($request->session()->get('admin_id')) {
             return $this->ret(['msg' => '请勿重复登录']);
         }
 
@@ -51,7 +52,16 @@ class IndexController extends CommonController
             $username = $data['username'] ?? '';
             $password = $data['password'] ?? '';
 
-            $request->session()->put('user_token', md5(time()));
+            $admin_model = Admin::query()->where('username', $username)->first();
+            if (!$admin_model) {
+                throw new \Exception('账号密码错误');
+            }
+            if ($admin_model->password != md5($password)) {
+                throw new \Exception('账号密码错误');
+            }
+
+            $request->session()->put('admin_id', $admin_model->id);
+            $request->session()->put('admin_info', json_encode($admin_model->toArray()));
 
             return $this->ret([
                 'code' => 1,
