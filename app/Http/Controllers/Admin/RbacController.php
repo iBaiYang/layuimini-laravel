@@ -65,7 +65,7 @@ class RbacController extends CommonController
 
             return view('admin.rbac.action_edit', compact('menus', 'record'));
         } catch (\Exception $ex) {
-            return $this->ret(['msg' => $ex->getMessage()]);
+            return $this->ret(['status' => 0, 'msg' => $ex->getMessage()]);
         }
     }
 }

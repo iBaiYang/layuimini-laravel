@@ -2,7 +2,7 @@
 
 ## 说明
 
-结合 layuimini 和 laravel 框架开发的一个可以快速进行Admin后台开发的框架。
+结合 layuimini 和 laravel 6.20 框架开发的一个可以快速进行Admin后台开发的框架。
 
 ## 安装
 
