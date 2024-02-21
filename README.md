@@ -3,6 +3,7 @@
 ## 说明
 
 结合 layuimini 和 laravel 6.20 框架开发的一个可以快速进行Admin后台开发的框架。
+v2_danye分支 依据的是 LAYUI MINI 的单页版，master分支 依据的是 LAYUI MINI 的iframe版。
 
 ## 安装
 
