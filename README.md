@@ -3,6 +3,7 @@
 ## 说明
 
 结合 layuimini 和 laravel 6.20 框架开发的一个可以快速进行Admin后台开发的框架。
+master分支 依据的是 LAYUI MINI 的iframe版，v2_danye分支 依据的是 LAYUI MINI 的单页版。
 
 ## 安装
 
@@ -29,7 +30,12 @@ nginx伪静态配置：
 
 ## 使用
 
-视图文件开发，给 public/layuimini 文件夹搭建 html 服务，在浏览器中查看效果、追溯源码进行开发。
+Laravel 本身是一个前后端结合的框架，我们可以在框架中进行前端视图开发。
+Layuimini 本身是一个前端框架，我们要把 Layuimini 结合到 Laravel 中去，
+这里可以采用页面样式复制的方式把Layuimini部分代码复制到Laravel视图页中去进行定制开发。
+
+关于Layuimini页面样式，我们可以给 public/layuimini 文件夹搭建一个 html 服务，
+然后在浏览器中查看效果、追溯源码，进行需要的代码的复制。
 
 ## 数据准备
 
