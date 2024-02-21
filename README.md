@@ -34,8 +34,11 @@ Laravel 本身是一个前后端结合的框架，我们可以在框架中进行
 Layuimini 本身是一个前端框架，我们要把 Layuimini 结合到 Laravel 中去，
 这里可以采用页面样式复制的方式把Layuimini部分代码复制到Laravel视图页中去进行定制开发。
 
-关于Layuimini页面样式，我们可以给 public/layuimini 文件夹搭建一个 html 服务，
+关于Layuimini页面样式，我们可以给 public/layuimini 文件夹搭建一个 html服务，
 然后在浏览器中查看效果、追溯源码，进行需要的代码的复制。
+
+**注意**：不要为了在Laravel中展示Layuimini的个别页面而修改 public/layuimini 文件夹下的文件，
+这样会导致自己搭建的layuimini的html服务无法使用。
 
 ## 数据准备
 
