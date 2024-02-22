@@ -1,4 +1,16 @@
-<div class="layuimini-container layuimini-page-anim">
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>layui</title>
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <link rel="stylesheet" href="/layuimini/lib/layui-v2.6.3/css/layui.css" media="all">
+    <link rel="stylesheet" href="/layuimini/css/public.css" media="all">
+</head>
+<body>
+<div class="layuimini-container">
     <div class="layuimini-main">
 
         <fieldset class="table-search-fieldset">
@@ -19,9 +31,7 @@
                             </div>
                         </div>
                         <div class="layui-inline">
-                            <button type="submit" class="layui-btn layui-btn-primary" lay-submit
-                                    lay-filter="data-search-btn"><i class="layui-icon"></i> 搜 索
-                            </button>
+                            <button type="submit" class="layui-btn layui-btn-primary"  lay-submit lay-filter="data-search-btn"><i class="layui-icon"></i> 搜 索</button>
                         </div>
                     </div>
                 </form>
@@ -30,8 +40,8 @@
 
         <script type="text/html" id="toolbarDemo">
             <div class="layui-btn-container">
-                <button class="layui-btn layui-btn-normal layui-btn-sm data-add-btn" lay-event="add"> 添加</button>
-                <button class="layui-btn layui-btn-sm layui-btn-danger data-delete-btn" lay-event="delete"> 删除</button>
+                <button class="layui-btn layui-btn-normal layui-btn-sm data-add-btn" lay-event="add"> 添加 </button>
+                <button class="layui-btn layui-btn-sm layui-btn-danger data-delete-btn" lay-event="delete"> 删除 </button>
             </div>
         </script>
 
@@ -44,13 +54,12 @@
 
     </div>
 </div>
-
+<script src="/layuimini/lib/layui-v2.6.3/layui.js" charset="utf-8"></script>
 <script>
-    layui.use(['form', 'table', 'miniPage', 'element'], function () {
+    layui.use(['form', 'table'], function () {
         var $ = layui.jquery,
             form = layui.form,
-            table = layui.table,
-            miniPage = layui.miniPage;
+            table = layui.table;
 
         table.render({
             elem: '#currentTableId',
@@ -102,23 +111,18 @@
         });
 
         /**
-         * toolbar事件监听
+         * toolbar监听事件
          */
         table.on('toolbar(currentTableFilter)', function (obj) {
-            if (obj.event === 'add') {   // 监听添加操作
-                var content = miniPage.getHrefContent('{{route('admin_admin_edit')}}');
-                var openWH = miniPage.getOpenWidthHeight();
-
+            if (obj.event === 'add') {  // 监听添加操作
                 var index = layer.open({
                     title: '添加用户',
-                    type: 1,
+                    type: 2,
                     shade: 0.2,
-                    maxmin: true,
+                    maxmin:true,
                     shadeClose: true,
-                    // area: [openWH[0] + 'px', openWH[1] + 'px'],
-                    // offset: [openWH[2] + 'px', openWH[3] + 'px'],
-                    area: ['500px', '550px'],
-                    content: content,
+                    area: ['100%', '100%'],
+                    content: '{{route('admin_admin_edit')}}',
                 });
                 $(window).on("resize", function () {
                     layer.full(index);
@@ -139,19 +143,14 @@
             var data = obj.data;
             if (obj.event === 'edit') {
 
-                var content = miniPage.getHrefContent('{{route('admin_admin_edit')}}' + '?id=' + data.id);
-                var openWH = miniPage.getOpenWidthHeight();
-
                 var index = layer.open({
                     title: '编辑用户',
-                    type: 1,
+                    type: 2,
                     shade: 0.2,
-                    maxmin: true,
+                    maxmin:true,
                     shadeClose: true,
-                    // area: [openWH[0] + 'px', openWH[1] + 'px'],
-                    // offset: [openWH[2] + 'px', openWH[3] + 'px'],
-                    area: ['500px', '550px'],
-                    content: content,
+                    area: ['100%', '100%'],
+                    content: '{{route('admin_admin_edit')}}' + '?id=' + data.id,
                 });
                 $(window).on("resize", function () {
                     layer.full(index);
@@ -167,3 +166,6 @@
 
     });
 </script>
+
+</body>
+</html>
