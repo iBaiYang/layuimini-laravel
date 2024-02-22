@@ -13,11 +13,10 @@
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="format-detection" content="telephone=no">
     <link rel="icon" href="static/images/favicon.ico">
-    <link rel="stylesheet" href="/layuimini/lib/layui-v2.6.3/css/layui.css" media="all">
-    <link rel="stylesheet" href="/layuimini/lib/font-awesome-4.7.0/css/font-awesome.min.css" media="all">
-    <link rel="stylesheet" href="/layuimini/css/layuimini.css?v=2.0.1" media="all">
-    <link rel="stylesheet" href="/layuimini/css/themes/default.css" media="all">
-    <link rel="stylesheet" href="/layuimini/css/public.css" media="all">
+    <link rel="stylesheet" href="layuimini/lib/layui-v2.6.3/css/layui.css" media="all">
+    <link rel="stylesheet" href="layuimini/css/layuimini.css?v=2.0.4.2" media="all">
+    <link rel="stylesheet" href="layuimini/css/themes/default.css" media="all">
+    <link rel="stylesheet" href="layuimini/lib/font-awesome-4.7.0/css/font-awesome.min.css" media="all">
     <!--[if lt IE 9]>
     <script src="https://cdn.staticfile.org/html5shiv/r29/html5.min.js"></script>
     <script src="https://cdn.staticfile.org/respond.js/1.4.2/respond.min.js"></script>
@@ -29,7 +28,7 @@
 <div class="layui-layout layui-layout-admin">
 
     <div class="layui-header header">
-        <div class="layui-logo layuimini-logo layuimini-back-home"></div>
+        <div class="layui-logo layuimini-logo"></div>
 
         <div class="layuimini-header-content">
             <a>
@@ -101,24 +100,37 @@
 
     <div class="layui-body">
 
-        <div class="layui-card layuimini-page-header layui-hide">
-            <div class="layui-breadcrumb layuimini-page-title">
-                <a lay-href="" href="{{route('index')}}">主页</a><span lay-separator="">/</span>
-                <a><cite>常规管理</cite></a><span lay-separator="">/</span>
-                <a><cite>系统设置</cite></a>
+        <div class="layuimini-tab layui-tab-rollTool layui-tab" lay-filter="layuiminiTab" lay-allowclose="true">
+            <ul class="layui-tab-title">
+                <li class="layui-this" id="layuiminiHomeTabId" lay-id=""></li>
+            </ul>
+            <div class="layui-tab-control">
+                <li class="layuimini-tab-roll-left layui-icon layui-icon-left"></li>
+                <li class="layuimini-tab-roll-right layui-icon layui-icon-right"></li>
+                <li class="layui-tab-tool layui-icon layui-icon-down">
+                    <ul class="layui-nav close-box">
+                        <li class="layui-nav-item">
+                            <a href="javascript:;"><span class="layui-nav-more"></span></a>
+                            <dl class="layui-nav-child">
+                                <dd><a href="javascript:;" layuimini-tab-close="current">关 闭 当 前</a></dd>
+                                <dd><a href="javascript:;" layuimini-tab-close="other">关 闭 其 他</a></dd>
+                                <dd><a href="javascript:;" layuimini-tab-close="all">关 闭 全 部</a></dd>
+                            </dl>
+                        </li>
+                    </ul>
+                </li>
+            </div>
+            <div class="layui-tab-content">
+                <div id="layuiminiHomeTabIframe" class="layui-tab-item layui-show"></div>
             </div>
         </div>
 
-        <div class="layuimini-content-page">
-        </div>
-
     </div>
-
 </div>
-<script src="/layuimini/lib/layui-v2.6.3/layui.js" charset="utf-8"></script>
-<script src="/layuimini/js/lay-config.js?v=2.0.0" charset="utf-8"></script>
+<script src="layuimini/lib/layui-v2.6.3/layui.js" charset="utf-8"></script>
+<script src="layuimini/js/lay-config.js?v=2.0.0" charset="utf-8"></script>
 <script>
-    layui.use(['jquery', 'layer', 'miniAdmin', 'miniTongji'], function () {
+    layui.use(['jquery', 'layer', 'miniAdmin','miniTongji'], function () {
         var $ = layui.jquery,
             layer = layui.layer,
             miniAdmin = layui.miniAdmin,
@@ -127,12 +139,13 @@
         var options = {
             iniUrl: "{{route('admin_init')}}",    // 初始化接口
             clearUrl: '{{route('admin_clear')}}', // 缓存清理接口
-            renderPageVersion: true,    // 初始化页面是否加版本号
+            urlHashLocation: true,      // 是否打开hash定位
             bgColorDefault: false,      // 主题默认配置
             multiModule: true,          // 是否开启多模块
             menuChildOpen: false,       // 是否默认展开菜单
             loadingTime: 0,             // 初始化加载时间
-            pageAnim: true,             // 切换菜单动画
+            pageAnim: true,             // iframe窗口动画
+            maxTabNum: 20,              // 最大的tab打开数量
         };
         miniAdmin.render(options);
 
