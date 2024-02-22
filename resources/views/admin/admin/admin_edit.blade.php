@@ -100,6 +100,7 @@
                 setTimeout(function () {
                     var iframeIndex = parent.layer.getFrameIndex(window.name);
                     parent.layer.close(iframeIndex);
+                    parent.location.reload();
                 },500);
             });
             return false;
