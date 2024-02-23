@@ -1,3 +1,20 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>layui</title>
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <link rel="stylesheet" href="/layuimini/lib/layui-v2.6.3/css/layui.css" media="all">
+    <link rel="stylesheet" href="/layuimini/css/public.css" media="all">
+    <style>
+        body {
+            background-color: #ffffff;
+        }
+    </style>
+</head>
+<body>
 <div class="layuimini-main">
     <div class="layui-form layuimini-form">
         @csrf
@@ -69,6 +86,7 @@
         </div>
     </div>
 </div>
+<script src="/layuimini/lib/layui-v2.6.3/layui.js" charset="utf-8"></script>
 <script>
     layui.use(['form', 'table'], function () {
         var form = layui.form,
@@ -91,8 +109,11 @@
                     layer.alert(ret.msg);
                     return false;
                 }
+
                 layer.alert(ret.msg);
                 setTimeout(function () {
+                    var iframeIndex = parent.layer.getFrameIndex(window.name);
+                    parent.layer.close(iframeIndex);
                     parent.location.reload();
                 }, 500);
             });
@@ -101,3 +122,5 @@
 
     });
 </script>
+</body>
+</html>

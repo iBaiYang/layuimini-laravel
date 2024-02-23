@@ -22,6 +22,26 @@ class RbacController extends CommonController
 
     /**
      * @param Request $request
+     * @return false|string
+     */
+    public function action_api(Request $request)
+    {
+        $records = Action::query()->whereIn('status', [1, 2])
+            ->orderBy('sort', 'asc')
+            ->get()->toArray();
+
+        $total = Action::query()->whereIn('status', [1, 2])->count();
+
+        return $this->ret([
+            'code' => 0,
+            'msg' => '',
+            'count' => $total,
+            'data' => $records
+        ]);
+    }
+
+    /**
+     * @param Request $request
      * @return false|\Illuminate\Contracts\View\Factory|\Illuminate\View\View|string
      */
     public function action_edit(Request $request)
@@ -57,11 +77,11 @@ class RbacController extends CommonController
                 ]);
             }
 
-            $parent_ids = Action::query()->where(['pid' => 0])->pluck('id');
             $menus = Action::query()->whereIn('type', [1, 2])
-                ->whereIn('id', $parent_ids)
-                ->orWhereIn('pid', $parent_ids)
-                ->orderByDesc('pid')->get();
+                ->whereIn('status', [1, 2])
+                ->orderBy('sort', 'asc')
+                ->orderBy('id', 'asc')
+                ->get()->toArray();
 
             return view('admin.rbac.action_edit', compact('menus', 'record'));
         } catch (\Exception $ex) {
