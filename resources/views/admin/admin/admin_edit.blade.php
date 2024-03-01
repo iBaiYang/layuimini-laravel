@@ -20,7 +20,8 @@
     <div class="layui-form-item">
         <label class="layui-form-label required">用户名</label>
         <div class="layui-input-block">
-            <input type="text" name="username" lay-verify="required" lay-reqtext="用户名不能为空" placeholder="请输入用户名" value="{{$record['username'] ?? ''}}" class="layui-input">
+            <input type="text" name="username" lay-verify="required" lay-reqtext="用户名不能为空" placeholder="请输入用户名"
+                   value="{{$record['username'] ?? ''}}" class="layui-input">
             <tip>填写管理员的用户名！</tip>
         </div>
     </div>
@@ -28,14 +29,16 @@
         <div class="layui-form-item">
             <label class="layui-form-label required">密码</label>
             <div class="layui-input-block">
-                <input type="password" name="password" lay-verify="required" lay-reqtext="密码为空" placeholder="请输入密码（字母、数字，6-12位）"  class="layui-input">
+                <input type="password" name="password" lay-verify="required" lay-reqtext="密码为空"
+                       placeholder="请输入密码（字母、数字，6-12位）" class="layui-input">
             </div>
         </div>
     @endif
     <div class="layui-form-item">
         <label class="layui-form-label required">手机</label>
         <div class="layui-input-block">
-            <input type="number" name="mobile" lay-verify="required" lay-reqtext="手机不能为空" placeholder="请输入手机" value="{{$record['mobile'] ?? ''}}" class="layui-input">
+            <input type="number" name="mobile" lay-verify="required" lay-reqtext="手机不能为空" placeholder="请输入手机"
+                   value="{{$record['mobile'] ?? ''}}" class="layui-input">
         </div>
     </div>
     <div class="layui-form-item">
@@ -54,8 +57,8 @@
     <div class="layui-form-item">
         <label class="layui-form-label">状态</label>
         <div class="layui-input-block">
-            <input type="checkbox" checked="checked" name="status" lay-skin="switch" lay-text="正常|禁用">
-            <div class="layui-unselect layui-form-switch layui-form-onswitch" lay-skin="_switch"><em>正常</em><i></i></div>
+            <input type="checkbox" name="status" lay-skin="switch" lay-text="正常|禁用"
+                   @if(empty($record) || $record['status'] == 1) checked="checked" @endif>
         </div>
     </div>
 
@@ -89,9 +92,9 @@
             // return false;
 
             var id = '{{$record['id']??''}}';
-            $.post('{{route('admin_admin_edit')}}?id='+id, $.parseJSON(JSON.stringify(data.field)), function (ret) {
+            $.post('{{route('admin_admin_edit')}}?id=' + id, $.parseJSON(JSON.stringify(data.field)), function (ret) {
                 ret = JSON.parse(ret);
-                if(!ret.code){
+                if (ret.code) {
                     layer.alert(ret.msg);
                     return false;
                 }
@@ -101,7 +104,7 @@
                     var iframeIndex = parent.layer.getFrameIndex(window.name);
                     parent.layer.close(iframeIndex);
                     parent.location.reload();
-                },500);
+                }, 1000);
             });
             return false;
         });

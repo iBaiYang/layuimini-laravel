@@ -3,7 +3,7 @@
 Route::get('login', 'Admin\IndexController@login')->name('admin_login')->middleware('web');
 Route::post('login_in', 'Admin\IndexController@login_in')->name('admin_login_in')->middleware('web');
 
-Route::group(["prefix" => "admin", "namespace" => "Admin", 'middleware' => ['web','checkLogin']], function () {
+Route::group(["prefix" => "admin", "namespace" => "Admin", 'middleware' => ['web', 'checkLogin']], function () {
     Route::get('/', 'HomeController@home')->name('admin_home');
     Route::post('login_out', 'HomeController@login_out')->name('admin_login_out');
     Route::get('init', 'HomeController@init')->name('admin_init');
@@ -13,6 +13,7 @@ Route::group(["prefix" => "admin", "namespace" => "Admin", 'middleware' => ['web
     Route::get('admin', 'AdminController@admin')->name('admin_admin');
     Route::get('admin_api', 'AdminController@admin_api')->name('admin_admin_api');
     Route::match(['get', 'post'], 'admin_edit', 'AdminController@admin_edit')->name('admin_admin_edit');
+    Route::post('admin_delete', 'AdminController@admin_delete')->name('admin_admin_delete');
 
     // 权限
     Route::get('rbac_action', 'RbacController@action')->name('admin_rbac_action');
@@ -21,7 +22,6 @@ Route::group(["prefix" => "admin", "namespace" => "Admin", 'middleware' => ['web
 
     Route::get('rbac_role', 'RbacController@role')->name('admin_rbac_role');
     Route::get('rbac_role_api', 'RbacController@role_api')->name('admin_rbac_role_api');
-
 
 
     Route::get('menu', 'HomeController@menu')->name('admin_menu');

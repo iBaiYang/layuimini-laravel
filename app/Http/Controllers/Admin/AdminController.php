@@ -29,15 +29,21 @@ class AdminController extends CommonController
         $data = $request->all();
         $page = $data['limit'] ?? 10;
 
-        $model = Admin::query()->whereIn('status', [1, 2])->where('username', '!=', 'Admin');
+        $model = Admin::query()->whereIn('status', [Admin::STATUS_ENABLE, Admin::STATUS_DISABLE])->where('username', '!=', 'Admin');
+
         if ($data['searchParams'] ?? '') {
-            $searchParams = json_decode($data['searchParams'], 1);
+            $searchParams = json_decode($data['searchParams'], true);
             if ($searchParams['username'] ?? '') {
                 $model->where('username', 'like', "%{$searchParams['username']}%");
             }
-            if ($searchParams['c_time'] ?? '') {
-                $datetime = explode('~', $searchParams['c_time']);
-                $model->where('c_time', '>=', $datetime[0])->where('c_time', '<=', $datetime[1]);
+
+            if ($searchParams['status'] ?? '') {
+                $model->where('status', $searchParams['status']);
+            }
+
+            if (!empty($searchParams['created_at'])) {
+                $datetime = explode('~', $searchParams['created_at']);
+                $model->where('created_at', '>=', strtotime($datetime[0]))->where('created_at', '<=', strtotime($datetime[1]));
             }
         }
 
@@ -63,6 +69,7 @@ class AdminController extends CommonController
 
             if ($request->isMethod("POST")) {
                 $data = $request->all();
+
                 if (!$data['username'] ?? '') {
                     throw new \Exception('账户不能为空');
                 }
@@ -82,26 +89,65 @@ class AdminController extends CommonController
                         throw new \Exception('密码错误(支持字母、数字，8-12位)');
                     }
                     $record->password = md5($data['password']);
+                } else {
+                    if ($record->status == Admin::STATUS_DELETE) {
+                        throw new \Exception('该账户不可编辑');
+                    }
+                }
+
+                $status = Admin::STATUS_ENABLE;
+                if (empty($data['status']) || $data['status'] == Admin::STATUS_DISABLE) {
+                    $status = Admin::STATUS_DISABLE;
                 }
 
                 $record->username = $data['username'];
                 $record->mobile = $data['mobile'] ?? '';
                 $record->email = $data['email'] ?? '';
                 $record->remark = $data['remark'] ?? '';
-                $record->status = !empty($data['status']) ? 1 : 2;
+                $record->status = $status;
                 $record->updated_at = $updated_at;
 
                 $record->save();
 
-                return $this->ret([
-                    'code' => 1,
-                    'msg' => '操作成功',
-                ]);
+                return $this->succ('操作成功');
             }
 
             return view('admin.admin.admin_edit', compact('record'));
         } catch (\Exception $ex) {
-            return $this->ret(['status' => 0, 'msg' => $ex->getMessage()]);
+            return $this->fail($ex->getMessage());
+        }
+    }
+
+    /**
+     * @param Request $request
+     * @return false|string
+     */
+    public function admin_delete(Request $request)
+    {
+        try {
+            if ($request->isMethod("POST")) {
+                $ids = $request->get('ids');
+                if (!$ids ?? '') {
+                    throw new \Exception('未选择账号');
+                }
+                $ids = json_decode($ids, true);
+
+                $total = Admin::query()->whereIn('id', $ids)->whereIn('status', [Admin::STATUS_ENABLE, Admin::STATUS_DISABLE])->count();
+                if (count($ids) != $total) {
+                    throw new \Exception('提交参数有误');
+                }
+
+                $ret = Admin::query()->whereIn('id', $ids)->update(['status' => Admin::STATUS_DELETE, 'updated_at' => time()]);
+                if (!$ret) {
+                    throw new \Exception('删除失败');
+                }
+
+                return $this->succ('操作成功');
+            }
+
+            throw new \Exception('非POST方式提交');
+        } catch (\Exception $ex) {
+            return $this->fail($ex->getMessage());
         }
     }
 }

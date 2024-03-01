@@ -48,4 +48,7 @@ class Admin extends Model
     const CREATED_AT = 'created_at';
     const UPDATED_AT = 'updated_at';
 
+    const STATUS_ENABLE = 1;
+    const STATUS_DISABLE = 2;
+    const STATUS_DELETE = 99;
 }
