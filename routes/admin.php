@@ -25,6 +25,7 @@ Route::group(["prefix" => "admin", "namespace" => "Admin", 'middleware' => ['web
     Route::get('rbac_role_api', 'RbacController@role_api')->name('admin_rbac_role_api');
     Route::match(['get', 'post'], 'rbac_role_edit', 'RbacController@role_edit')->name('admin_rbac_role_edit');
     Route::post('rbac_role_delete', 'RbacController@role_delete')->name('admin_rbac_role_delete');
+    Route::match(['get', 'post'], 'rbac_role_actions', 'RbacController@role_actions')->name('admin_rbac_role_actions');
 
 
     Route::get('menu', 'HomeController@menu')->name('admin_menu');

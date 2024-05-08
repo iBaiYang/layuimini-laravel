@@ -209,4 +209,77 @@ class RbacController extends CommonController
             return $this->fail($ex->getMessage());
         }
     }
+
+    /**
+     * @param Request $request
+     * @return false|\Illuminate\Contracts\View\Factory|\Illuminate\View\View|string
+     */
+    public function role_actions(Request $request)
+    {
+        try {
+            $id = $request->get('id');
+            $record = $id ? Role::query()->where('id', $id)->firstOrFail() : [];
+
+            if ($request->isMethod("POST")) {
+                $data = $request->all();
+
+                $action_ids = '';
+                if (!empty($data['action_ids'])) {
+                    $pids_1 = Action::query()->whereIn('id', $data['action_ids'])->get()->pluck('pid')->toArray();
+                    $pids_2 = Action::query()->whereIn('id', $pids_1)->get()->pluck('pid')->toArray();
+                    $pids = array_merge($pids_1, $pids_2);
+                    $pinfo = Action::query()->whereIn('id', $pids)->get()->toArray();
+                    $action_ids = implode(',', array_filter(array_unique(array_merge($data['action_ids'], array_column($pinfo, 'id'), array_column($pinfo, 'pid')))));
+                }
+
+                $record->update([
+                    'action_ids' => $action_ids
+                ]);
+
+                return $this->succ('操作成功');
+            }
+
+            $action_ids = explode(',',$record['action_ids']);
+
+            $catalogs = Action::query()->where('type', 1)
+                ->where('status', Action::STATUS_ENABLE)
+                ->orderBy('sort', 'asc')
+                ->orderBy('id', 'asc')
+                ->get()->toArray();
+            $actions1 = [];
+            $catalog_ids = [];
+            foreach ($catalogs as $catalog) {
+                $actions1[$catalog['id']] = $catalog;
+                $catalog_ids[] = $catalog['id'];
+            }
+
+            $menus = Action::query()->where('type', 2)
+                ->where('status', Action::STATUS_ENABLE)
+                ->orderBy('sort', 'asc')
+                ->orderBy('id', 'asc')
+                ->get()->toArray();
+            $actions2 = [];
+            foreach ($menus as $menu) {
+                if (in_array($menu['pid'], $catalog_ids)) {
+                    $actions1[$menu['pid']]['child'][] = $menu;
+                } else {
+                    $actions2[$menu['pid']]['child'][] = $menu;
+                }
+            }
+
+            $actions = Action::query()->where('type', 3)
+                ->where('status', Action::STATUS_ENABLE)
+                ->orderBy('sort', 'asc')
+                ->orderBy('id', 'asc')
+                ->get()->toArray();
+            $actions3 = [];
+            foreach ($actions as $action) {
+                $actions3[$action['pid']][] = $action;
+            }
+
+            return view('admin.rbac.role_actions', compact('record', 'actions1', 'actions2', 'actions3', 'action_ids'));
+        } catch (\Exception $ex) {
+            return $this->fail($ex->getMessage());
+        }
+    }
 }
