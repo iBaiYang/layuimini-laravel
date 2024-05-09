@@ -61,6 +61,7 @@
 
         <script type="text/html" id="currentTableBar">
             <a class="layui-btn layui-btn-normal layui-btn-xs data-count-edit" lay-event="action">权限分配</a>
+            <a class="layui-btn layui-btn-normal layui-btn-xs data-count-edit" lay-event="user">授权用户</a>
             <a class="layui-btn layui-btn-normal layui-btn-xs data-count-edit" lay-event="edit">编辑</a>
             <a class="layui-btn layui-btn-xs layui-btn-danger data-count-delete" lay-event="delete">删除</a>
         </script>
@@ -242,8 +243,22 @@
                     shade: 0.2,
                     maxmin: true,
                     shadeClose: true,
-                    area: ['900px', '600px'],
+                    area: ['800px', '600px'],
                     content: '{{route('admin_rbac_role_actions')}}' + '?id=' + data.id,
+                });
+                $(window).on("resize", function () {
+                    layer.full(index);
+                });
+                return false;
+            } else if (obj.event === 'user') {
+                var index = layer.open({
+                    title: '权限分配',
+                    type: 2,
+                    shade: 0.2,
+                    maxmin: true,
+                    shadeClose: true,
+                    area: ['600px', '500px'],
+                    content: '{{route('admin_rbac_role_users')}}' + '?id=' + data.id,
                 });
                 $(window).on("resize", function () {
                     layer.full(index);

@@ -3,6 +3,8 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Model\Action;
+use App\Model\Admin;
+use App\Model\AdminRole;
 use App\Model\Role;
 use Illuminate\Http\Request;
 
@@ -239,7 +241,7 @@ class RbacController extends CommonController
                 return $this->succ('操作成功');
             }
 
-            $action_ids = explode(',',$record['action_ids']);
+            $action_ids = explode(',', $record['action_ids']);
 
             $catalogs = Action::query()->where('type', 1)
                 ->where('status', Action::STATUS_ENABLE)
@@ -278,6 +280,61 @@ class RbacController extends CommonController
             }
 
             return view('admin.rbac.role_actions', compact('record', 'actions1', 'actions2', 'actions3', 'action_ids'));
+        } catch (\Exception $ex) {
+            return $this->fail($ex->getMessage());
+        }
+    }
+
+    /**
+     * @param Request $request
+     * @return false|\Illuminate\Contracts\View\Factory|\Illuminate\View\View|string
+     */
+    public function role_users(Request $request)
+    {
+        try {
+            $id = $request->get('id');
+            $record = $id ? Role::query()->where('id', $id)->firstOrFail() : [];
+
+            if ($request->isMethod("POST")) {
+                $data = $request->all();
+
+                if ($data['type'] == 'leave') {
+                    $admin_ids = explode(',', trim($data['ids'], ','));
+                    AdminRole::query()->where('role_id', $data['id'])->whereIn('admin_id', $admin_ids)->delete();
+                } else {
+                    $insert_datas = [];
+                    foreach (explode(',', trim($data['ids'], ',')) as $admin_id) {
+                        array_push($insert_datas, [
+                            'role_id' => $id,
+                            'admin_id' => $admin_id,
+                            'created_at' => time(),
+                        ]);
+                    }
+
+                    AdminRole::query()->insert($insert_datas);
+                }
+
+                return $this->succ('操作成功');
+            }
+
+            $users = [];
+            $admin_users = Admin::query()->where('status', Admin::STATUS_ENABLE)
+                ->where('username', '!=', 'admin')
+                ->orderBy('id', 'asc')
+                ->get()->keyBy('id');
+            foreach ($admin_users as $one) {
+                array_push($users, [
+                    'value' => $one['id'],
+                    'title' => $one['username'],
+                ]);
+            }
+
+            $role_users = [];
+            foreach (AdminRole::query()->where('role_id', $id)->get() as $one) {
+                array_push($role_users, $one['admin_id']);
+            }
+
+            return view('admin.rbac.role_users', compact('record', 'users', 'role_users'));
         } catch (\Exception $ex) {
             return $this->fail($ex->getMessage());
         }

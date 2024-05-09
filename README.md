@@ -92,12 +92,11 @@ CREATE TABLE `ll_admin_role` (
   `admin_id` int(11) unsigned NOT NULL COMMENT '管理员id',
   `role_id` int(11) unsigned NOT NULL COMMENT '角色id',
   `created_at` int NOT NULL COMMENT '创建时间',
-  `updated_at` int NOT NULL COMMENT '修改时间',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci COMMENT='管理员-角色表';
 ```
 
-管理员admin的密码：admin
+管理员账号：admin，密码：admin。
 
 
 
