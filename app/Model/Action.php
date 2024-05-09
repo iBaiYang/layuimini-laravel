@@ -22,4 +22,8 @@ class Action extends Model
     const STATUS_ENABLE = 1;
     const STATUS_DISABLE = 2;
     const STATUS_DELETE = 3;
+
+    const TYPE_CATALOG = 1;
+    const TYPE_MENU = 2;
+    const TYPE_ACTION = 3;
 }
