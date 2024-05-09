@@ -29,7 +29,7 @@ class AdminController extends CommonController
         $data = $request->all();
         $page = $data['limit'] ?? 10;
 
-        $model = Admin::query()->whereIn('status', [Admin::STATUS_ENABLE, Admin::STATUS_DISABLE])->where('username', '!=', 'Admin');
+        $model = Admin::query()->whereIn('status', [Admin::STATUS_ENABLE, Admin::STATUS_DISABLE])->where('username', '!=', 'admin');
 
         if ($data['searchParams'] ?? '') {
             $searchParams = json_decode($data['searchParams'], true);

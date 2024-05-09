@@ -28,6 +28,9 @@ nginx伪静态配置：
     }
 ```
 
+如果项目权限部分报错：页面中checkAuth方法未找到，说明 helpers.php 文件未加载进来，执行下面的命令更新项目autoload文件：
+> composer dump-autoload
+
 ## 使用
 
 Laravel 本身是一个前后端结合的框架，我们可以在框架中进行前端视图开发。
@@ -97,9 +100,6 @@ CREATE TABLE `ll_admin_role` (
 ```
 
 管理员账号：admin，密码：admin。
-
-
-
 
 
 
