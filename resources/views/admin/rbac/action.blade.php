@@ -146,8 +146,23 @@
             } else if (layEvent === 'del') {
                 // layer.msg('删除' + data.id);
                 layer.confirm('真的删除行么', function (index) {
-                    obj.del();
-                    layer.close(index);
+                    $.post('{{route('admin_rbac_action_delete')}}', {
+                        id: data.id,
+                        _token: "{{csrf_token()}}"
+                    }, function (ret) {
+                        ret = JSON.parse(ret);
+                        if (ret.code) {
+                            layer.alert(ret.msg);
+                            return false;
+                        }
+
+                        layer.alert(ret.msg);
+                        obj.del();
+                        layer.close(index);
+                    });
+
+
+
                 });
                 // layer.confirm('确定删除？',function () {
                 //     if(!res.status){

@@ -348,7 +348,8 @@ class HomeController extends CommonController
         $admin_info = json_decode(session('admin_info'), true);
         if ($admin_info['username'] != 'admin') {
             $role_ids = AdminRole::query()->where('admin_id', $admin_info['id'])->get()->pluck('role_id');
-            $role_action_ids = Role::query()->whereIn('id', $role_ids)->get()->pluck('action_ids');
+            $role_action_ids = Role::query()->whereIn('id', $role_ids)
+                ->where('status', Role::STATUS_ENABLE)->get()->pluck('action_ids');
 
             $ids = [];
             foreach ($role_action_ids as $action_ids) {

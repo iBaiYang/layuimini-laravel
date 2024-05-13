@@ -26,23 +26,36 @@
 
         @if(!empty($action1['child']))
             @foreach($action1['child'] as $action1_child)
-                {{$action1_child['title']}}
+                <div style="margin-left: 20px; padding: 0 10px; font-size: 16px; font-weight: 300;">
+                    {{$action1_child['title']}}
+                </div>
 
-                @if(!empty($actions2[$action1_child['id']]['child']))
-                    @foreach($actions2[$action1_child['id']]['child'] as $action2_child)
-                        <div class="layui-form-item">
-                            <label class="layui-form-label">{{$action2_child['title']}}</label>
+                @if($action1_child['type'] == 3)
+                    <div class="layui-form-item">
                             <div class="layui-input-block">
-                                @if(!empty($actions3[$action2_child['id']]))
-                                    @foreach($actions3[$action2_child['id']] as $action3)
-                                        <input type="checkbox" name="action_ids[]" @if(in_array($action3['id'], $action_ids)) checked @endif title="{{$action3['title']}}" value="{{$action3['id']}}">
-                                    @endforeach
+                            @foreach($actions2[$action1_child['id']]['child'] as $action2_child)
+                                @if($action2_child['type'] == 3)
+                                    <input type="checkbox" name="action_ids[]" @if(in_array($action2_child['id'], $action_ids)) checked @endif title="{{$action2_child['title']}}" value="{{$action2_child['id']}}">
                                 @endif
+                            @endforeach
                             </div>
-                        </div>
-                    @endforeach
+                    </div>
+                @else
+                    @if(!empty($actions2[$action1_child['id']]['child']))
+                        @foreach($actions2[$action1_child['id']]['child'] as $action2_child)
+                            <div class="layui-form-item">
+                                <label class="layui-form-label">{{$action2_child['title']}}</label>
+                                <div class="layui-input-block">
+                                    @if(!empty($actions3[$action2_child['id']]))
+                                        @foreach($actions3[$action2_child['id']] as $action3)
+                                            <input type="checkbox" name="action_ids[]" @if(in_array($action3['id'], $action_ids)) checked @endif title="{{$action3['title']}}" value="{{$action3['id']}}">
+                                        @endforeach
+                                    @endif
+                                </div>
+                            </div>
+                        @endforeach
+                    @endif
                 @endif
-
             @endforeach
         @endif
 

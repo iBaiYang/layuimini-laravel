@@ -29,11 +29,12 @@ class RbacController extends CommonController
      */
     public function action_api(Request $request)
     {
-        $records = Action::query()->whereIn('status', [1, 2])
+        $records = Action::query()->whereIn('status', [Action::STATUS_ENABLE, Action::STATUS_DISABLE])
             ->orderBy('sort', 'asc')
+            ->orderBy('id', 'asc')
             ->get()->toArray();
 
-        $total = Action::query()->whereIn('status', [1, 2])->count();
+        $total = Action::query()->whereIn('status', [Action::STATUS_ENABLE, Action::STATUS_DISABLE])->count();
 
         return $this->ret([
             'code' => 0,
@@ -80,15 +81,67 @@ class RbacController extends CommonController
                 ]);
             }
 
-            $menus = Action::query()->whereIn('type', [1, 2])
-                ->whereIn('status', [1, 2])
+            $menus = Action::query()->whereIn('status', [Action::STATUS_ENABLE, Action::STATUS_DISABLE])
+                ->where(function($query) {
+                    $query->where('pid', 0)
+                        ->orWhereIn('type', [Action::TYPE_CATALOG, Action::TYPE_MENU]);
+                })
+                ->orderBy('pid', 'asc')
                 ->orderBy('sort', 'asc')
                 ->orderBy('id', 'asc')
                 ->get()->toArray();
 
+            $pid_0_action = [];
+            foreach ($menus as $menu) {
+                if ($menu['pid'] == 0 && $menu['type'] == Action::TYPE_ACTION) {
+                    $pid_0_action[] = $menu['id'];
+                }
+            }
+            $actions_1 = Action::query()->whereIn('status', [Action::STATUS_ENABLE, Action::STATUS_DISABLE])
+                ->WhereIn('pid', $pid_0_action)
+                ->orderBy('sort', 'asc')
+                ->orderBy('id', 'asc')
+                ->get()->toArray();
+
+            $menus = array_merge($menus, $actions_1);
+
             return view('admin.rbac.action_edit', compact('menus', 'record'));
         } catch (\Exception $ex) {
             return $this->ret(['status' => 0, 'msg' => $ex->getMessage()]);
+        }
+    }
+
+    /**
+     * @param Request $request
+     * @return false|string
+     */
+    public function action_delete(Request $request)
+    {
+        try {
+            if ($request->isMethod("POST")) {
+                $id = $request->get('id');
+                if (!$id ?? '') {
+                    throw new \Exception('未选择操作');
+                }
+
+                $record = $id ? Action::query()->where('id', $id)
+                    ->whereIn('status', [Action::STATUS_ENABLE, Action::STATUS_DISABLE])
+                    ->firstOrFail() : [];
+
+                $record->status = Action::STATUS_DELETE;
+                $record->updated_at = time();
+
+                $ret = $record->save();
+                if (!$ret) {
+                    throw new \Exception('删除失败');
+                }
+
+                return $this->succ('操作成功');
+            }
+
+            throw new \Exception('非POST方式提交');
+        } catch (\Exception $ex) {
+            return $this->fail($ex->getMessage());
         }
     }
 
@@ -203,6 +256,8 @@ class RbacController extends CommonController
                     throw new \Exception('删除失败');
                 }
 
+                AdminRole::query()->whereIn('role_id', $ids)->delete();
+
                 return $this->succ('操作成功');
             }
 
@@ -243,8 +298,9 @@ class RbacController extends CommonController
 
             $action_ids = explode(',', $record['action_ids']);
 
-            $catalogs = Action::query()->where('type', 1)
+            $catalogs = Action::query()->where('pid', 0)
                 ->where('status', Action::STATUS_ENABLE)
+                ->orderBy('pid', 'asc')
                 ->orderBy('sort', 'asc')
                 ->orderBy('id', 'asc')
                 ->get()->toArray();
@@ -255,7 +311,7 @@ class RbacController extends CommonController
                 $catalog_ids[] = $catalog['id'];
             }
 
-            $menus = Action::query()->where('type', 2)
+            $menus = Action::query()
                 ->where('status', Action::STATUS_ENABLE)
                 ->orderBy('sort', 'asc')
                 ->orderBy('id', 'asc')
