@@ -128,9 +128,75 @@ class RbacController extends CommonController
                     ->whereIn('status', [Action::STATUS_ENABLE, Action::STATUS_DISABLE])
                     ->firstOrFail() : [];
 
+                ///////////每个角色中包含该操作及其子操作的都重新给角色操作赋值//////////
+                $sons = (new Action())->getSons([$id], [Action::STATUS_ENABLE, Action::STATUS_DISABLE], [
+                    Action::TYPE_CATALOG, Action::TYPE_MENU, Action::TYPE_ACTION
+                ], true);
+
+                $son_ids = [];
+                if ($sons) {
+                    foreach ($sons as $one) {
+                        $son_ids[] = $one['id'];
+                    }
+                }
+                array_push($son_ids, $id);
+
+                // 若父级只包括当前操作，则取消父级
+                if ($record->pid) {
+                    $parent_one = Action::query()->whereIn('status', [Action::STATUS_ENABLE, Action::STATUS_DISABLE])
+                        ->where('id', $record->pid)
+                        ->first()->toArray();
+
+                    $parent_one_son = (new Action())->getSons([$parent_one['id']], [Action::STATUS_ENABLE, Action::STATUS_DISABLE], [
+                        Action::TYPE_CATALOG, Action::TYPE_MENU, Action::TYPE_ACTION
+                    ], false);
+                    if (count($parent_one_son) == 1) {
+                        array_push($son_ids, $parent_one['id']);
+
+                        if ($parent_one['pid']) {
+                            $parent_two = Action::query()->whereIn('status', [Action::STATUS_ENABLE, Action::STATUS_DISABLE])
+                                ->where('id', $parent_one['pid'])
+                                ->first()->toArray();
+
+                            $parent_two_son = (new Action())->getSons([$parent_two['id']], [Action::STATUS_ENABLE, Action::STATUS_DISABLE], [
+                                Action::TYPE_CATALOG, Action::TYPE_MENU, Action::TYPE_ACTION
+                            ], false);
+                            if (count($parent_two_son) == 1) {
+                                array_push($son_ids, $parent_two['id']);
+
+                                if ($parent_two['pid']) {
+                                    $parent_three = Action::query()->whereIn('status', [Action::STATUS_ENABLE, Action::STATUS_DISABLE])
+                                        ->where('id', $parent_two['pid'])
+                                        ->first()->toArray();
+
+                                    $parent_three_son = (new Action())->getSons([$parent_three['id']], [Action::STATUS_ENABLE, Action::STATUS_DISABLE], [
+                                        Action::TYPE_CATALOG, Action::TYPE_MENU, Action::TYPE_ACTION
+                                    ], false);
+
+                                    if (count($parent_three_son) == 1) {
+                                        array_push($son_ids, $parent_three['id']);
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+
+                $roles = Role::query()->get();
+                foreach ($roles as $one) {
+                    if (!empty($one->action_ids)) {
+                        $action_ids = explode(',', $one->action_ids);
+                        $action_ids = array_diff($action_ids, $son_ids);
+                        $action_ids = implode(',', $action_ids);
+
+                        $one->action_ids = $action_ids;
+                        $one->updated_at = time();
+                        $one->save();
+                    }
+                }
+
                 $record->status = Action::STATUS_DELETE;
                 $record->updated_at = time();
-
                 $ret = $record->save();
                 if (!$ret) {
                     throw new \Exception('删除失败');
@@ -141,7 +207,7 @@ class RbacController extends CommonController
 
             throw new \Exception('非POST方式提交');
         } catch (\Exception $ex) {
-            return $this->fail($ex->getMessage());
+            return $this->fail($ex->getLine() . $ex->getMessage());
         }
     }
 
@@ -289,9 +355,9 @@ class RbacController extends CommonController
                     $action_ids = implode(',', array_filter(array_unique(array_merge($data['action_ids'], array_column($pinfo, 'id'), array_column($pinfo, 'pid')))));
                 }
 
-                $record->update([
-                    'action_ids' => $action_ids
-                ]);
+                $record->action_ids = $action_ids;
+                $record->updated_at = time();
+                $record->save();
 
                 return $this->succ('操作成功');
             }

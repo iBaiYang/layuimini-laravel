@@ -145,12 +145,12 @@ INSERT INTO `ll_role` VALUES ('2', '行政人员', '13,14,15,16,4,5,6,2,3,12,17,
 -- ----------------------------
 -- Records of ll_admin_role
 -- ----------------------------
-INSERT INTO `ll_admin_role` VALUES ('6', '2', '2', '1715572610');
+INSERT INTO `ll_admin_role` VALUES ('1', '2', '2', '1715572610');
 ```
 
 管理员账号：admin，密码：admin。
 
-
+测试账号：test01，密码：123456
 
 
 ## 参考
