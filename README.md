@@ -105,7 +105,6 @@ CREATE TABLE `ll_admin_role` (
 -- ----------------------------
 -- Records of ll_admin
 -- ----------------------------
-INSERT INTO `ll_admin` VALUES ('1', 'admin', '21232f297a57a5a743894a0e4a801fc3', '', '', 'admin', '1', '1702438466', '1702438466');
 INSERT INTO `ll_admin` VALUES ('2', 'test01', 'e10adc3949ba59abbe56e057f20f883e', '18405070001', 'test01@test.com', 'test01', '1', '1715064845', '1715312365');
 
 -- ----------------------------
