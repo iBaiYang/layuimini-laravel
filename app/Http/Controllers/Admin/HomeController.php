@@ -288,56 +288,56 @@ class HomeController extends CommonController
                         ]
                     ]
                 ],
-                [
-                    "title" => "内部管理",
-                    "href" => "",
-                    "icon" => "fa fa-gears",
-                    "target" => "",
-                    "child" => [
-                        [
-                            "title" => "组织管理",
-                            "href" => "",
-                            "icon" => "fa fa-shield",
-                            "target" => "_self",
-                            "child" => [
-                                [
-                                    "title" => "员工管理",
-                                    "href" => route('admin_admin', [], false),
-                                    "icon" => "fa fa-stumbleupon-circle",
-                                    "target" => "_self"
-                                ]
-                            ]
-                        ]
-                    ]
-                ],
-                [
-                    "title" => "系统管理",
-                    "href" => "",
-                    "icon" => "fa fa-gears",
-                    "target" => "",
-                    "child" => [
-                        [
-                            "title" => "权限管理",
-                            "href" => "",
-                            "icon" => "fa fa-shield",
-                            "target" => "_self",
-                            "child" => [
-                                [
-                                    "title" => "操作管理",
-                                    "href" => route('admin_rbac_action', [], false),
-                                    "icon" => "fa fa-stumbleupon-circle",
-                                    "target" => "_self"
-                                ],
-                                [
-                                    "title" => "角色管理",
-                                    "href" => route('admin_rbac_role', [], false),
-                                    "icon" => "fa fa-viacoin",
-                                    "target" => "_self"
-                                ]
-                            ]
-                        ]
-                    ]
-                ]
+//                [
+//                    "title" => "内部管理",
+//                    "href" => "",
+//                    "icon" => "fa fa-gears",
+//                    "target" => "",
+//                    "child" => [
+//                        [
+//                            "title" => "组织管理",
+//                            "href" => "",
+//                            "icon" => "fa fa-shield",
+//                            "target" => "_self",
+//                            "child" => [
+//                                [
+//                                    "title" => "员工管理",
+//                                    "href" => route('admin_admin', [], false),
+//                                    "icon" => "fa fa-stumbleupon-circle",
+//                                    "target" => "_self"
+//                                ]
+//                            ]
+//                        ]
+//                    ]
+//                ],
+//                [
+//                    "title" => "系统管理",
+//                    "href" => "",
+//                    "icon" => "fa fa-gears",
+//                    "target" => "",
+//                    "child" => [
+//                        [
+//                            "title" => "权限管理",
+//                            "href" => "",
+//                            "icon" => "fa fa-shield",
+//                            "target" => "_self",
+//                            "child" => [
+//                                [
+//                                    "title" => "操作管理",
+//                                    "href" => route('admin_rbac_action', [], false),
+//                                    "icon" => "fa fa-stumbleupon-circle",
+//                                    "target" => "_self"
+//                                ],
+//                                [
+//                                    "title" => "角色管理",
+//                                    "href" => route('admin_rbac_role', [], false),
+//                                    "icon" => "fa fa-viacoin",
+//                                    "target" => "_self"
+//                                ]
+//                            ]
+//                        ]
+//                    ]
+//                ]
             ]
         ];
 

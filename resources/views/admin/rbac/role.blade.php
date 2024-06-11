@@ -89,7 +89,7 @@
                 {type: "checkbox", width: 50, fixed: 'left'},
                 {field: 'id', width: 80, title: 'ID', sort: true, fixed: 'left'},
                 {field: 'name', minWidth: 80, title: '角色名', fixed: 'left'},
-                {field: 'sort', minWidth: 80, title: '排序', fixed: 'left'},
+                {field: 'sort', width: 80, title: '排序', fixed: 'left'},
                 {
                     field: 'status', title: '状态', align: 'center', templet: function (d) {
                         return d.status == 1 ? '正常' : '<bold style="color:red">禁用</bold>';
@@ -107,7 +107,7 @@
                         return updated_at.toLocaleDateString().replace(/\//g, "-") + " " + updated_at.toTimeString().substr(0, 8);
                     }
                 },
-                {title: '操作', minWidth: 150, toolbar: '#currentTableBar', align: "center", fixed: 'right'}
+                {title: '操作', minWidth: 300, toolbar: '#currentTableBar', align: "center", fixed: 'right'}
             ]],
             limits: [10, 15, 20, 25, 50, 100],
             limit: 15,
