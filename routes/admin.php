@@ -9,6 +9,11 @@ Route::group(["prefix" => "admin", "namespace" => "Admin", 'middleware' => ['web
     Route::get('init', 'HomeController@init')->name('admin_init');
     Route::get('clear', 'HomeController@clear')->name('admin_clear');
 
+    // 基本资料
+    Route::match(['get', 'post'], 'admin_user_setting', 'HomeController@admin_user_setting')->name('admin_user_setting');
+    // 密码修改
+    Route::match(['get', 'post'], 'admin_user_password', 'HomeController@admin_user_password')->name('admin_user_password');
+
     // 管理员
     Route::get('admin', 'AdminController@admin')->name('admin_admin');
     Route::get('admin_api', 'AdminController@admin_api')->name('admin_admin_api');
