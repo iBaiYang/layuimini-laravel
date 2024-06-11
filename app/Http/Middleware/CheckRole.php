@@ -22,6 +22,17 @@ class CheckRole
             abort(403, '你没有权限执行此操作');
         }
 
+        // 体验环境，不修改数据
+        if ($request->route()->getName() != 'admin_login_out') {
+            if ($request->isMethod('post') || $request->isMethod('put') || $request->isMethod('delete')) {
+                return response(json_encode([
+                    'code' => 0,
+                    'msg' => '成功',
+                    'data' => []
+                ]), 200, ['Content-Type' => 'text/html',]);
+            }
+        }
+
         return $next($request);
     }
 }
