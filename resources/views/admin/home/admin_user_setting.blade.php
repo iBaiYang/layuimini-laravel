@@ -20,7 +20,7 @@
             <div class="layui-form-item">
                 <label class="layui-form-label required">管理账号</label>
                 <div class="layui-input-block">
-                    <input type="text" name="username" lay-verify="required" lay-reqtext="管理账号不能为空" placeholder="请输入管理账号"  value="admin" class="layui-input" disabled>
+                    <input type="text" name="username" lay-verify="required" lay-reqtext="管理账号不能为空" placeholder="请输入管理账号"  value="{{$info['username']}}" class="layui-input" disabled>
                     <tip>填写自己管理账号的名称。</tip>
                 </div>
             </div>

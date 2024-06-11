@@ -36,9 +36,11 @@ class HomeController extends CommonController
     /**
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
-    public function home()
+    public function home(Request $request)
     {
-        return view('admin.home.home');
+        $admin_info = $request->session()->get('admin_info');
+
+        return view('admin.home.home', ['info' => json_decode($admin_info, true)]);
     }
 
     /**
