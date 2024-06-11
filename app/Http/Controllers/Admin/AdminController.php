@@ -85,8 +85,8 @@ class AdminController extends CommonController
                     $record = new Admin();
                     $record->created_at = $updated_at;
 
-                    if (empty($data['password']) || !preg_match('/^[a-zA-Z0-9]{6,12}$/', $data['password'])) {
-                        throw new \Exception('密码错误(支持字母、数字，8-12位)');
+                    if (empty($data['password']) || !preg_match('/^[a-zA-Z0-9]{4,12}$/', $data['password'])) {
+                        throw new \Exception('密码错误(支持字母、数字，4-12位)');
                     }
                     $record->password = md5($data['password']);
                 } else {

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Model\Action;
+use App\Model\Admin;
 use App\Model\AdminRole;
 use App\Model\Role;
 use Illuminate\Http\Request;
@@ -35,9 +36,11 @@ class HomeController extends CommonController
     /**
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
-    public function home()
+    public function home(Request $request)
     {
-        return view('admin.home.home');
+        $admin_info = $request->session()->get('admin_info');
+
+        return view('admin.home.home', ['info' => json_decode($admin_info, true)]);
     }
 
     /**
@@ -418,6 +421,94 @@ class HomeController extends CommonController
             'code' => 1,
             'msg' => '服务端清理缓存成功',
         ]);
+    }
+
+    /**
+     * 基本资料修改
+     * @param Request $request
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
+    public function admin_user_setting(Request $request)
+    {
+        try {
+            $admin_id = $request->session()->get('admin_id');
+
+            if ($request->isMethod("POST")) {
+                $record = Admin::query()->where('id', $admin_id)->firstOrFail();
+                if (empty($record)) {
+                    throw new \Exception('账户未找到');
+                }
+
+                $data = $request->all();
+
+                $record->mobile = $data['mobile'] ?? '';
+                $record->email = $data['email'] ?? '';
+                $record->remark = $data['remark'] ?? '';
+                $record->updated_at = time();
+
+                $record->save();
+
+                $request->session()->put('admin_info', json_encode($record->toArray()));
+
+                return $this->succ('操作成功');
+            }
+
+            $admin_info = $request->session()->get('admin_info');
+
+            return view('admin.home.admin_user_setting', ['info' => json_decode($admin_info, true)]);
+        } catch (\Exception $ex) {
+            return $this->fail($ex->getMessage());
+        }
+    }
+
+    /**
+     * 密码修改
+     * @param Request $request
+     * @return false|\Illuminate\Contracts\View\Factory|\Illuminate\View\View|string
+     */
+    public function admin_user_password(Request $request)
+    {
+        try {
+            if ($request->isMethod("POST")) {
+                $data = $request->all();
+
+                $old_password = $data['old_password'];
+                $new_password = $data['new_password'];
+                $again_password = $data['again_password'];
+
+                if (empty($again_password)) {
+                    throw new \Exception('新密码不能为空');
+                }
+                if ($new_password != $again_password) {
+                    throw new \Exception('新密码与确认密码不一致');
+                }
+                if (!preg_match('/^[a-zA-Z0-9]{4,12}$/', $new_password)) {
+                    throw new \Exception('密码错误(支持字母、数字，4-12位)');
+                }
+
+                $admin_id = $request->session()->get('admin_id');
+
+                $record = Admin::query()->where('id', $admin_id)->firstOrFail();
+                if (empty($record)) {
+                    throw new \Exception('账户未找到');
+                }
+
+                if ($record->password != md5($old_password)) {
+                    throw new \Exception('旧密码不正确');
+                }
+
+                $record->password = md5($new_password);
+                $record->updated_at = time();
+
+                $record->save();
+
+                return $this->succ('操作成功');
+            }
+
+            return view('admin.home.admin_user_password');
+        } catch (\Exception $ex) {
+            return $this->fail($ex->getMessage());
+        }
     }
 
 
