@@ -151,6 +151,9 @@ INSERT INTO `ll_admin_role` VALUES ('1', '2', '2', '1715572610');
 
 测试账号：test01，密码：123456
 
+## 备注
+
+体验分支：exp；账号密码：admin，admin
 
 ## 参考
 
