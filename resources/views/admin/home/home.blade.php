@@ -2,9 +2,9 @@
 <html>
 <head>
     <meta charset="utf-8">
-    <title>layuimini-laravel Admin后台</title>
-    <meta name="keywords" content="layuimini,layui,layui模板,layui后台,后台模板,admin,admin模板,layui mini, laravel">
-    <meta name="description" content="结合 layuimini 和 laravel 框架开发的一个可以快速进行Admin后台开发的框架">
+    <title>LayLar Admin后台</title>
+    <meta name="keywords" content="LayLar Admin后台">
+    <meta name="description" content="LayLar Admin后台">
     <meta name="renderer" content="webkit">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
     <meta http-equiv="Access-Control-Allow-Origin" content="*">

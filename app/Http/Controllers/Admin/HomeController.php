@@ -54,7 +54,7 @@ class HomeController extends CommonController
                 "href" => "layuimini/page/welcome-1.html?t=1"
             ],
             "logoInfo" => [
-                "title" => "Lay Lara",
+                "title" => "LayLar",
                 "image" => "static/images/logo.png",
                 "href" => ""
             ],
