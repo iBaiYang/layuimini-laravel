@@ -7,6 +7,7 @@ use App\Model\Admin;
 use App\Model\AdminRole;
 use App\Model\Role;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 /**
  * Class HomeController
@@ -933,19 +934,40 @@ class HomeController extends CommonController
         ]);
     }
 
-    public function upload()
+    public function upload(Request $request)
     {
-        return $this->ret([
-            'code' => 1,
-            'msg' => '上传成功',
-            'data' => [
-                'url' => [
-                    "../images/logo.png",
-                    "../images/captcha.jpg"
-                ]
-            ]
-        ]);
+        if ($request->isMethod('POST')) {
+            $file = $request->file('file');
+            //判断文件是否上传成功
+            if ($file->isValid()){
+                //原文件名
+                $originalName = $file->getClientOriginalName();
+                //扩展名
+                $ext = $file->getClientOriginalExtension();
+                //MimeType
+                $type = $file->getClientMimeType();
+                //临时绝对路径
+                $realPath = $file->getRealPath();
+                $filename = uniqid().'.'.$ext;
+                $bool = Storage::disk('uploads')->put($filename,file_get_contents($realPath));
+                //判断是否上传成功
+                if ($bool) {
+                    echo 'success';
+
+                    return $this->ret([
+                        'code' => 1,
+                        'msg' => '上传成功',
+                        'data' => [
+                            'url' => [
+                                "../images/logo.png",
+                                "../images/captcha.jpg"
+                            ]
+                        ]
+                    ]);
+                } else {
+                    echo 'fail';
+                }
+            }
+        }
     }
-
-
 }

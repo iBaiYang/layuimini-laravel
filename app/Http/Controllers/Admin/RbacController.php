@@ -82,28 +82,11 @@ class RbacController extends CommonController
             }
 
             $menus = Action::query()->whereIn('status', [Action::STATUS_ENABLE, Action::STATUS_DISABLE])
-                ->where(function($query) {
-                    $query->where('pid', 0)
-                        ->orWhereIn('type', [Action::TYPE_CATALOG, Action::TYPE_MENU]);
-                })
+                ->WhereIn('type', [Action::TYPE_CATALOG, Action::TYPE_MENU])
                 ->orderBy('pid', 'asc')
                 ->orderBy('sort', 'asc')
                 ->orderBy('id', 'asc')
                 ->get()->toArray();
-
-            $pid_0_action = [];
-            foreach ($menus as $menu) {
-                if ($menu['pid'] == 0 && $menu['type'] == Action::TYPE_ACTION) {
-                    $pid_0_action[] = $menu['id'];
-                }
-            }
-            $actions_1 = Action::query()->whereIn('status', [Action::STATUS_ENABLE, Action::STATUS_DISABLE])
-                ->WhereIn('pid', $pid_0_action)
-                ->orderBy('sort', 'asc')
-                ->orderBy('id', 'asc')
-                ->get()->toArray();
-
-            $menus = array_merge($menus, $actions_1);
 
             return view('admin.rbac.action_edit', compact('menus', 'record'));
         } catch (\Exception $ex) {
